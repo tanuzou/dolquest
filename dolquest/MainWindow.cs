@@ -44,7 +44,6 @@ namespace dolquest
     , G_ID
     , G_NAME
     , G_DIFF
-    , G_CRONO
     , G_TYPE
     , G_CITY
     , G_SKILL1
@@ -59,6 +58,7 @@ namespace dolquest
     , G_FOLL_NO
     , G_CONT_NAME
     , G_CONT_SEQ
+    , G_CRONO
     }
 
 
@@ -143,7 +143,6 @@ namespace dolquest
             DataColumn dataClumn02 = dataTable.Columns.Add("ID", typeof(int));
             DataColumn dataClumn03 = dataTable.Columns.Add("クエスト名");
             DataColumn dataClumn04 = dataTable.Columns.Add("★");
-            DataColumn dataClumn05 = dataTable.Columns.Add("クロノ");
             DataColumn dataClumn06 = dataTable.Columns.Add("ギルド");
             DataColumn dataClumn07 = dataTable.Columns.Add("都市");
             DataColumn dataClumn08 = dataTable.Columns.Add("スキル1");
@@ -154,10 +153,11 @@ namespace dolquest
             DataColumn dataClumn10R = dataTable.Columns.Add("3R", typeof(int));
             DataColumn dataClumn11 = dataTable.Columns.Add("種類");
             DataColumn dataClumn12 = dataTable.Columns.Add("発見物");
-            DataColumn dataClumn13 = dataTable.Columns.Add("連続クエスト");
-            DataColumn dataClumn14 = dataTable.Columns.Add("順番");
-            DataColumn dataClumn15 = dataTable.Columns.Add("前提");
-            DataColumn dataClumn16 = dataTable.Columns.Add("後続");
+            DataColumn dataClumn13 = dataTable.Columns.Add("前提");
+            DataColumn dataClumn14 = dataTable.Columns.Add("後続");
+            DataColumn dataClumn15 = dataTable.Columns.Add("連続クエスト");
+            DataColumn dataClumn16 = dataTable.Columns.Add("順番");
+            DataColumn dataClumn05 = dataTable.Columns.Add("クロノ");
             dataTable.PrimaryKey = new DataColumn[] { dataTable.Columns["ID"] };
 
             // フォームの大きさを保存しておく
@@ -179,8 +179,8 @@ namespace dolquest
         // フォームリサイズの適用
         private void MainWindow_Resize(object sender, EventArgs e)
         {
-            Console.WriteLine("{0}, {1}", this.Width, minWidth);
-            Console.WriteLine("{0}, {1}", this.Height, minHeight);
+//            Console.WriteLine("{0}, {1}", this.Width, minWidth);
+//            Console.WriteLine("{0}, {1}", this.Height, minHeight);
 
             if (this.WindowState != FormWindowState.Minimized)
             {
@@ -323,7 +323,6 @@ namespace dolquest
                                             ,data[(int)FILEDATA.Q_ID]
                                             ,data[(int)FILEDATA.Q_NAME]
                                             ,data[(int)FILEDATA.Q_DIFF]
-                                            ,data[(int)FILEDATA.Q_CRONO]
                                             ,data[(int)FILEDATA.Q_TYPE]
                                             ,data[(int)FILEDATA.Q_CITY]
                                             ,skill1
@@ -338,6 +337,7 @@ namespace dolquest
                                             ,data[(int)FILEDATA.Q_FOLL_NO]
                                             ,data[(int)FILEDATA.Q_CONT_NAME]
                                             ,data[(int)FILEDATA.Q_CONT_SEQ]
+                                            ,data[(int)FILEDATA.Q_CRONO]
                                            }
                                 );
                 // 都市
