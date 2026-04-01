@@ -36,7 +36,7 @@ namespace dolquest
         Q_FOLL_NO
     }
 
-    // grid field
+     // grid field
     enum GRIDDATA : int
     {
         G_CLREA
@@ -65,12 +65,6 @@ namespace dolquest
 
     public partial class MainWindow : Form
     {
-
-        int diffwidth = 0;
-        int diffheight = 0;
-
-        int minHeight = 0;
-        int minWidth = 0;
 
         DataSet questData;
         Hashtable userData;
@@ -160,44 +154,12 @@ namespace dolquest
             DataColumn dataClumn05 = dataTable.Columns.Add("クロノ");
             dataTable.PrimaryKey = new DataColumn[] { dataTable.Columns["ID"] };
 
-            // フォームの大きさを保存しておく
-            diffwidth = this.Width - this.tabView.Width;
-            diffheight = this.Height - this.tabView.Height;
-
-            minWidth = this.Width;
-            minHeight = this.Height;
-
             // ファイルロード
             loadData();
 
             // データの表示
             showNewData(questData);
 
-        }
-
-
-        // フォームリサイズの適用
-        private void MainWindow_Resize(object sender, EventArgs e)
-        {
-//            Console.WriteLine("{0}, {1}", this.Width, minWidth);
-//            Console.WriteLine("{0}, {1}", this.Height, minHeight);
-
-            if (this.WindowState != FormWindowState.Minimized)
-            {
-
-                if (this.Width < minWidth)
-                {
-                    this.Width = minWidth;
-                }
-                if (this.Height < minHeight)
-                {
-                    this.Height = minHeight;
-                }
-
-                this.tabView.Width = this.Size.Width - diffwidth;
-                this.tabView.Height = this.Size.Height - diffheight;
-            }
-       
         }
 
         // グリッドのフォーマット
@@ -991,7 +953,7 @@ namespace dolquest
             DataGridView dgv = this.dataGridView;
             string qname = (string)dgv[(int)GRIDDATA.G_NAME, contextRownum].Value;
             string urlParam = HttpUtility.UrlEncode(qname);
-            string url = string.Format("https://www.google.co.jp/?gws_rd=ssl#q={0:s}", urlParam);
+            string url = string.Format("https://www.google.cm/search?q={0:s}+大航海時代オンライン", urlParam);
             System.Diagnostics.Process.Start(url);
         }
 
@@ -1021,6 +983,47 @@ namespace dolquest
             chkUnvisibleMQ.Checked = true;
             chkUnvisibleFQ.Checked = true;
             chkUnvisibleCQ.Checked = true;
+        }
+
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Normal状態で保存
+            Properties.Settings.Default.WindowState = FormWindowState.Normal;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                // ウインドウステートがNormalな場合には位置（location）とサイズ（size）を記憶
+                Properties.Settings.Default.WindowLocation = this.Location;
+                Properties.Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                // もし最小化（minimized）や最大化（maximized）の場合には、RestoreBoundsを記憶
+                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
+                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+
+            // 設定を保存する
+            Properties.Settings.Default.Save();
+        }
+
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+
+            if (Properties.Settings.Default.WindowSize.Width == 0) Properties.Settings.Default.Upgrade();
+
+
+            if (Properties.Settings.Default.WindowSize.Width == 0 || Properties.Settings.Default.WindowSize.Height == 0)
+            {
+            }
+            else
+            {
+                this.WindowState = Properties.Settings.Default.WindowState;
+                // 起動時にはNormal状態
+                this.WindowState = FormWindowState.Normal;
+
+                this.Location = Properties.Settings.Default.WindowLocation;
+                this.Size = Properties.Settings.Default.WindowSize;
+            }
         }
     }
 }
